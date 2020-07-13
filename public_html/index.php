@@ -258,6 +258,10 @@ Examples :
 # ___________________
 # MAIN PROGRAM
 
+// get out early and avoid lots of 'Undefined index...' error message
+if (!isset($_REQUEST['image'])) {
+  die_with_form();
+}
 
 // Fake user agent
 ini_set('user_agent','Commons API;');
