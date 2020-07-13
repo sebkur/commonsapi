@@ -29,7 +29,15 @@ $api_data_page_url = 'http://commons.wikimedia.org/w/index.php?title=Commons:Com
 $license_data = array () ; // License detail data
 $ignore_categories = array () ; // Do not include these categories in the list
 
+function pop_explode ( $delimiter , $string, $limit = PHP_INT_MAX ) {
+  $split = explode ( $delimiter , $string, $limit ) ;
+  return array_pop ( $split );
+}
 
+function shift_explode ( $delimiter , $string, $limit = PHP_INT_MAX ) {
+  $split = explode ( $delimiter , $string, $limit ) ;
+  return array_shift ( $split );
+}
 
 # Scans the raw text from http://commons.wikimedia.org/w/index.php?title=Commons:Commons_API
 # and uses it as data
@@ -143,11 +151,11 @@ function try_information_template ( $text ) {
 
   $ret = false ;
   foreach ( $matches AS $m ) {
-    $t = array_pop ( explode ( $m , $text , 2 ) ) ;
+    $t = pop_explode ( $m , $text , 2 ) ;
     $title = array () ;
     preg_match ( '/\s+title="[^"]*"/' , $t , $title ) ;
     $title = $title[0] ;
-    $title = array_pop ( explode ( 'title="' , $title , 2 ) ) ;
+    $title = pop_explode ( 'title="' , $title , 2 ) ;
     $title = substr ( $title , 0 , -1 ) ;
     $title = urldecode ( $title ) ;
     
@@ -176,8 +184,8 @@ function try_fileinfo_template ( $text ) {
   $ret = false ;
   $t2 = array () ;
   foreach ( $matches AS $m ) {
-    $k = array_pop ( explode ( 'fileinfotpl_' , $m , 2 ) ) ;
-    $k = array_shift ( explode ( '"' , $k , 2 ) ) ;
+    $k = pop_explode ( 'fileinfotpl_' , $m , 2 ) ;
+    $k = shift_explode ( '"' , $k , 2 ) ;
     
     $parts = explode ( $m , $text ) ;
     array_shift ( $parts ) ;
@@ -185,8 +193,8 @@ function try_fileinfo_template ( $text ) {
     foreach ( $parts AS $p ) {
 //    $t = array_pop ( array_pop ( $parts ) ) ; // explode ( $m , $text , 2 )
 		$t = $p ;
-		$t = array_pop ( explode ( '<td' , $t , 2 ) ) ;
-		$t = array_pop ( explode ( '>' , $t , 2 ) ) ;
+		$t = pop_explode ( '<td' , $t , 2 ) ;
+		$t = pop_explode ( '>' , $t , 2 ) ;
 	
 		$t = get_same_level_html ( $t ) ;
 		if ( substr ( $t , 0 , 3 ) == '<b>' ) $t = substr ( $t , 3 ) ;
@@ -378,8 +386,8 @@ foreach ( $imagelist AS $img ) {
 		$t = explode ( '</span>' , $t , 2 ) ;
 	
 		$ln = array_shift ( $t ) ;
-		$ln = array_pop ( explode ( '<b>' , $ln ) ) ;
-		$ln = array_shift ( explode ( '</b>' , $ln ) ) ;
+		$ln = pop_explode ( '<b>' , $ln ) ;
+		$ln = shift_explode ( '</b>' , $ln ) ;
 		$ln = str_replace ( ':' , '' , $ln ) ;
 		$language_names[$m] = $ln ;
 	
@@ -413,8 +421,7 @@ foreach ( $imagelist AS $img ) {
 	preg_match_all ( '/ title="Category:[^"]+"\s*>/' , $text , $matches ) ;
 	$matches = $matches[0] ;
 	foreach ( $matches AS $m ) {
-		$split = explode ( ':' , $m , 2 ) ;
-		$m = array_pop ( $split ) ;
+		$m = pop_explode ( ':' , $m , 2 ) ;
 		$m = explode ( '"' , $m ) ;
 		array_pop ( $m ) ;
 		$m = implode ( '"' , $m ) ;
