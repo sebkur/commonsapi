@@ -413,7 +413,8 @@ foreach ( $imagelist AS $img ) {
 	preg_match_all ( '/ title="Category:[^"]+"\s*>/' , $text , $matches ) ;
 	$matches = $matches[0] ;
 	foreach ( $matches AS $m ) {
-		$m = array_pop ( explode ( ':' , $m , 2 ) ) ;
+		$split = explode ( ':' , $m , 2 ) ;
+		$m = array_pop ( $split ) ;
 		$m = explode ( '"' , $m ) ;
 		array_pop ( $m ) ;
 		$m = implode ( '"' , $m ) ;
