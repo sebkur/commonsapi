@@ -89,15 +89,7 @@ function read_from_api_page () {
 // Function to convert text in attributes and between tags to XML by changing some charactes to entities
 function myurlencode ( $text ) {
 	$text = str_replace ( '<a href="/w' , '<a href="http://commons.wikimedia.org/w' , $text ) ;
-
-	if ( 1 ) { // New  
-		$doc = new DOMDocument();
-		$fragment = $doc->createDocumentFragment();
-		$fragment->appendChild($doc->createTextNode($text));
-		return $doc->saveXML($fragment);
-	} else { // Old
-		return str_replace ( array ( '&', '"', "'", '<', '>' ), array ( '&amp;' , '&quot;', '&apos;' , '&lt;' , '&gt;' ), $text );
-	}
+	return htmlspecialchars($text);
 }
 
 
