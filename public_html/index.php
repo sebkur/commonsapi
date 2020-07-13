@@ -228,7 +228,7 @@ function try_fileinfo_template ( $text ) {
 function die_with_form () {
 	print "<h1>Wikimedia Commons API</h1>
 <hr/>
-Usage : <b>commonsapi.php?image=IMAGENAME</b><br/>
+Usage : <b>https://commonsapi.toolforge.org/?image=IMAGENAME</b><br/>
 IMAGENAME must not have an Image: prefix <br/>
 Optional parameters:
 <ul>
@@ -241,9 +241,9 @@ Optional parameters:
 </ul>
 Examples :
 <ul>
-<li><a href='commonsapi.php?image=Sa-warthog.jpg&thumbwidth=150&thumbheight=150&versions&meta'>Sa-warthog.jpg</a> with thumbnail, version, and meta information</li>
-<li><a href='commonsapi.php?image=Yarra_Panorama.jpg&forcehtml'>Yarra_Panorama.jpg</a> (contains geocoding, which resolves to a <tt>&lt;location&gt;</tt> tag)</li>
-<li><a href='commonsapi.php?image=Sa-warthog.jpg|Yarra_Panorama.jpg|filedoesnotexist&thumbwidth=150&thumbheight=150&versions&meta'>Multiple images</a> and one (deliberate) error, plus meta information</li>
+<li><a href='?image=Sa-warthog.jpg&thumbwidth=150&thumbheight=150&versions&meta'>Sa-warthog.jpg</a> with thumbnail, version, and meta information</li>
+<li><a href='?image=Yarra_Panorama.jpg&forcehtml'>Yarra_Panorama.jpg</a> (contains geocoding, which resolves to a <tt>&lt;location&gt;</tt> tag)</li>
+<li><a href='?image=Sa-warthog.jpg|Yarra_Panorama.jpg|filedoesnotexist&thumbwidth=150&thumbheight=150&versions&meta'>Multiple images</a> and one (deliberate) error, plus meta information</li>
 </ul>
 <i>Note:</i> All returned attributes and texts are entity-encoded (<i><tt>\"'<>&</tt></i> are replaced with XML entities).<br/><br/>
 
