@@ -238,8 +238,11 @@ function try_fileinfo_template ( $text ) {
 
 
 function die_with_form () {
-	print "<h1>Wikimedia Commons API</h1>
+?>
+<h1>Wikimedia Commons API</h1>
 <hr/>
+
+<h2>How can I use this API?</h2>
 Usage : <b>https://commonsapi.toolforge.org/?image=IMAGENAME</b><br/>
 IMAGENAME must not have an Image: prefix <br/>
 Optional parameters:
@@ -251,16 +254,33 @@ Optional parameters:
 <li><b>&versions</b> adds information about all former versions of the file</li>
 <li><b>&meta</b> adds meta information that is stored with the file (e.g., EXIF data)</li>
 </ul>
-Examples :
+
+<i>Note:</i> All returned attributes and texts are entity-encoded (<i><tt>"'&lt;>&</tt></i> are replaced with XML entities).<br/><br/>
+
+<h3>Examples</h3>
 <ul>
 <li><a href='?image=Sa-warthog.jpg&thumbwidth=150&thumbheight=150&versions&meta'>Sa-warthog.jpg</a> with thumbnail, version, and meta information</li>
 <li><a href='?image=Yarra_Panorama.jpg&forcehtml'>Yarra_Panorama.jpg</a> (contains geocoding, which resolves to a <tt>&lt;location&gt;</tt> tag)</li>
 <li><a href='?image=Sa-warthog.jpg|Yarra_Panorama.jpg|filedoesnotexist&thumbwidth=150&thumbheight=150&versions&meta'>Multiple images</a> and one (deliberate) error, plus meta information</li>
 </ul>
-<i>Note:</i> All returned attributes and texts are entity-encoded (<i><tt>\"'<>&</tt></i> are replaced with XML entities).<br/><br/>
 
-(You want to help making this API better? Data source for license information is <a href=\"http://commons.wikimedia.org/wiki/Commons:Commons_API\">here</a>. Bugs and feature requests go to <a href=\"http://commons.wikimedia.org/wiki/User_talk:Magnus_Manske\">this guy</a>.)
-" ;
+<h2>About this this API</h2>
+The source code that runs this API is hosted on a <a href="https://phabricator.wikimedia.org/source/tool-commonsapi/">repository</a> on Wikimedia's Phabricator
+and runs on <a href="https://wikitech.wikimedia.org/wiki/Portal:Toolforge">Toolforge</a>.
+<p>
+This API is a fork of the original version which is available <a href="https://magnus-toolserver.toolforge.org/commonsapi.php">here</a>.
+The source of the original version is available on a different
+<a href="https://bitbucket.org/magnusmanske/magnus-toolserver/src">repository</a> among a set of other APIs.
+
+
+<h2>Contributing to this API</h2>
+You want to help making this API better? Data source for license information is <a href="http://commons.wikimedia.org/wiki/Commons:Commons_API">here</a>.
+<p>
+Bugs and feature requests can be submitted as <a href="https://phabricator.wikimedia.org/source/tool-commonsapi/">tickets on Phabricator</a>.
+Actually they can't at the moment, but I'm looking for a solution for that :).
+<p>
+Bugs and feature requests on the original version go to <a href="http://commons.wikimedia.org/wiki/User_talk:Magnus_Manske">this guy</a>.
+<?php
 	exit ;
 }
 
