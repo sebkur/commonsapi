@@ -3,9 +3,13 @@
   Wikimedia Commons image API
   (c) 2008 by Magnus Manske
   Released under GPL
-  RUns at http://tools.wikimedia.de/~magnus/commonsapi.php
+  Runs at http://tools.wikimedia.de/~magnus/commonsapi.php
 */
 
+/*
+  Modified 2020 by Sebastian Kürten
+  Now runs at https://commonsapi.toolforge.org/
+*/
 
 /* USEFUL TEST IMAGES
 	ChathamHDY0016.JPG	                has location
