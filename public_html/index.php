@@ -12,7 +12,7 @@
 */
 
 /* USEFUL TEST IMAGES
-	ChathamHDY0016.JPG	                has location
+	ChathamHDY0016.JPG                  has location
 	Sa-warthog.jpg                      has many languages, featured
 	Gesammelte_Werke_(Thoma)_1_307.jpg  non-{{Information}} template
 */
