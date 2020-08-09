@@ -276,8 +276,7 @@ The source of the original version is available on a different
 <h2>Contributing to this API</h2>
 You want to help making this API better? Data source for license information is <a href="http://commons.wikimedia.org/wiki/Commons:Commons_API">here</a>.
 <p>
-Bugs and feature requests can be submitted as <a href="https://phabricator.wikimedia.org/source/tool-commonsapi/">tickets on Phabricator</a>.
-Actually they can't at the moment, but I'm looking for a solution for that :).
+Bugs and feature requests can be submitted as <a href="https://phabricator.wikimedia.org/project/profile/4889/">tickets on Phabricator</a>.
 <p>
 Bugs and feature requests on the original version go to <a href="http://commons.wikimedia.org/wiki/User_talk:Magnus_Manske">this guy</a>.
 <?php
