@@ -237,6 +237,45 @@ function try_fileinfo_template ( $text ) {
 }
 
 
+// Cleans up ugly JSON data by removing @attributes tag
+function cleanup_json ($ugly_json) {
+   if (is_object($ugly_json)) {
+      $nice_json = new stdClass();
+      foreach ($ugly_json as $attr => $value) {
+         if ($attr == '@attributes') {
+            foreach ($value as $xattr => $xvalue) {
+              $nice_json->$xattr = $xvalue;
+            }
+         } else {
+            $nice_json->$attr = cleanup_json($value);
+         }
+      }
+      return $nice_json;
+   } else if (is_array($ugly_json)) {
+      $nice_json = array();
+      foreach ($ugly_json as $n => $e) {
+        $nice_json[$n] = cleanup_json($e);
+      }
+      return $nice_json;
+   } else {
+      return $ugly_json;
+   }
+}
+
+// Retrieves XML from the output buffer and converts it to JSON
+function convert_to_json () {
+   $xml_string = ob_get_clean();
+   $xml = simplexml_load_string($xml_string);
+
+   // This is a bit hackish. The JSON generated via json_encode(simplexml_load_string()) is really ugly
+   // in particular, XML attributes end up inside "@attributes". So, what we do, is convert the JSON
+   // back to PHP objects, clean it up, then put it back into JSON
+   $ugly_json = json_decode(json_encode($xml));
+   $nice_json = cleanup_json($ugly_json);
+   return json_encode($nice_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+}
+
+
 function die_with_form () {
 ?>
 <h1>Wikimedia Commons API</h1>
@@ -253,6 +292,7 @@ Optional parameters:
 <li><b>&forcehtml</b> converts wiki text into HTML (slower, but gets rid of annoying wiki markup)</li>
 <li><b>&versions</b> adds information about all former versions of the file</li>
 <li><b>&meta</b> adds meta information that is stored with the file (e.g., EXIF data)</li>
+<li><b>&format=json</b> to request JSON output instead of default XML</li>
 </ul>
 
 <i>Note:</i> All returned attributes and texts are entity-encoded (<i><tt>"'&lt;>&</tt></i> are replaced with XML entities).<br/><br/>
@@ -302,17 +342,20 @@ $versions = isset ( $_REQUEST['versions'] ) ;
 $meta = isset ( $_REQUEST['meta'] ) ;
 $imagelist = explode ( '|' , $_REQUEST['image'] ) ;
 $force_html = isset ( $_REQUEST['forcehtml'] ) ;
-$get_languages = $_REQUEST['languages'] ;
-$thumb_width = $_REQUEST['thumbwidth'] ;
-$thumb_height = $_REQUEST['thumbheight'] ;
+$get_languages = isset ( $_REQUEST['languages'] ) ? $_REQUEST['languages'] : '';
+$thumb_width = isset ( $_REQUEST['thumbwidth'] ) ? $_REQUEST['thumbwidth'] : 0;
+$thumb_height = isset ( $_REQUEST['thumbheight'] ) ? $_REQUEST['thumbheight'] : 0;
+$format = isset ( $_REQUEST['format'] ) ? $_REQUEST['format'] : 'xml';
 if ( !$thumb_height || !$thumb_width ) $thumb_height = 0 ;
 if ( !$thumb_width ) $thumb_width = 0 ;
 if ( !isset ( $get_languages ) ) $get_languages = '' ;
 
 if ( count ( $imagelist ) == 1 && $imagelist[0] == '' ) die_with_form () ;
 
-if ( $testing )   header('Content-type: text/plain; charset=utf-8');
+if ( $format == 'json' ) header('Content-type: application/json; charset=utf-8');
+else if ( $testing )   header('Content-type: text/plain; charset=utf-8');
 else header('Content-type: text/xml; charset=utf-8');
+if ( $format == 'json' ) ob_start(); // Capture XML output for JSON conversion
 print '<?xml version="1.0" encoding="UTF-8"?>' ;
 print '<response version="' . $api_version . '">' ;
 
@@ -607,5 +650,9 @@ foreach ( $imagelist AS $img ) {
 }
 
 	print '</response>' ;
+
+if ( $format == 'json' ) {
+	print convert_to_json();
+}
 
 ?>
