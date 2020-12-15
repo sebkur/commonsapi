@@ -595,7 +595,16 @@ foreach ( $imagelist AS $img ) {
 	  foreach ( $metadata AS $k => $v ) {
 		$k = strtolower ( $k ) ;
 	//    $show = is_array($v) ? json_encode($v) : $v ;
-		print '<item name="' . myurlencode($v['name']) . '">' . myurlencode($v['value']) . '</item>' ;
+		// The XML->JSON conversion gets confused by elements that have both
+		// atttributes and text content. So we wrap the item value in a
+		// <value> tag when outputting JSON format to avoid this. We
+		// skip outputting that extra tag in non-JSON mode to preserve
+		// backward compatibility.
+		print '<item name="' . myurlencode($v['name']) . '">' .
+			( $format == 'json' ? '<value>' : '') .
+			myurlencode($v['value']) .
+			( $format == 'json' ? '</value>' : '') .
+			'</item>' ;
 		//>' . myurlencode ( $show ) . '</item>' ;
 	  }
 	  print '</meta>' ;
